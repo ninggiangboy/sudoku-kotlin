@@ -30,7 +30,7 @@ class SudokuBoard(private val rateCellsToShow: Double) {
         if (row == size) return true
         if (col == size) return solve(row + 1, 0)
         if (board[row][col] != 0) return solve(row, col + 1)
-        for (num in 1..9) {
+        for (num in 1..size) {
             if (isValidMove(row, col, num)) {
                 placeNumber(row, col, num)
                 if (solve(row, col + 1)) return true

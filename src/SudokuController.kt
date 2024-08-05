@@ -9,10 +9,10 @@ class SudokuController(private val model: SudokuBoard, private val view: SudokuV
                 val (row, col, num) = input
                 if (model.isValidMove(row, col, num)) {
                     model.placeNumber(row, col, num)
+                    view.printBoard(model)
                 } else {
                     view.showInvalidMoveMessage()
                 }
-                view.printBoard(model)
                 if (model.isBoardFull()) {
                     isWin = true
                     break
