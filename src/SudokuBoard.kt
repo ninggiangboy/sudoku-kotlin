@@ -55,8 +55,37 @@ class SudokuBoard(private val rateCellsToShow: Double) {
         }
     }
 
+    private fun shuffleArray(array: IntArray) {
+        for (i in array.indices) {
+            val randomIndex = Random.nextInt(array.size)
+            val temp = array[i]
+            array[i] = array[randomIndex]
+            array[randomIndex] = temp
+        }
+    }
+
+    private fun generate() {
+        val numbers = IntArray(size) { it + 1 }
+        shuffleArray(numbers)
+        solveWithNumbers(numbers)
+    }
+
+    private fun solveWithNumbers(numbers: IntArray, row: Int = 0, col: Int = 0): Boolean {
+        if (row == size) return true
+        if (col == size) return solveWithNumbers(numbers, row + 1, 0)
+        if (board[row][col] != 0) return solveWithNumbers(numbers, row, col + 1)
+        for (num in numbers) {
+            if (isValidMove(row, col, num)) {
+                placeNumber(row, col, num)
+                if (solveWithNumbers(numbers, row, col + 1)) return true
+                removeNumber(row, col)
+            }
+        }
+        return false
+    }
+
     fun generateSudokuBoard() {
-        solve()
+        generate()
         removeRandomCells(rateCellsToShow)
     }
 
